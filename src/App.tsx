@@ -7,9 +7,14 @@ import {
   addOrUpdateRecipe as dbAddOrUpdateRecipe,
   deleteRecipe as dbDeleteRecipe,
   getAllCategories,
-  saveCategories
+  saveCategories,
+  getPendingSync
 } from './services/storage';
-import { syncCatalogueFromRemote, pushCatalogueToGitHub } from './services/sync';
+import {
+  syncCatalogueFromRemote,
+  pushCatalogueToGitHub,
+  flushPendingSync
+} from './services/sync';
 import { Header } from './components/Header';
 import { WelcomeModal } from './components/WelcomeModal';
 import { SearchBar } from './components/SearchBar';
@@ -23,7 +28,7 @@ import { SettingsModal } from './components/SettingsModal';
 export const App: React.FC = () => {
   // Authentication & Role
   const [access, setAccess] = useState(() => getStoredAccess());
-  
+
   // Data State
   const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
@@ -34,6 +39,8 @@ export const App: React.FC = () => {
     lastSyncTime: null,
     isOnline: typeof navigator !== 'undefined' ? navigator.onLine : true,
     isSyncing: false,
+    pendingCount: 0,
+    syncState: 'synced',
     error: null
   });
 
@@ -55,16 +62,17 @@ export const App: React.FC = () => {
   // Show transient toast
   const showToast = (msg: string) => {
     setFeedbackMessage(msg);
-    setTimeout(() => setFeedbackMessage(null), 3500);
+    setTimeout(() => setFeedbackMessage(null), 4000);
   };
 
   // 1. Initial Load from IndexedDB & Background Sync
   const loadLocalAndSync = useCallback(async () => {
     try {
-      // Immediate instantaneous load from IndexedDB
-      const [localRecipes, localCategories] = await Promise.all([
+      // Immediate instantaneous load from local IndexedDB cache
+      const [localRecipes, localCategories, pending] = await Promise.all([
         getAllRecipes(),
-        getAllCategories()
+        getAllCategories(),
+        getPendingSync()
       ]);
 
       if (localRecipes.length > 0) {
@@ -75,19 +83,37 @@ export const App: React.FC = () => {
       }
       setLoading(false);
 
-      // Background remote sync
-      setSyncStatus((prev) => ({ ...prev, isSyncing: true }));
+      const hasPending = Boolean(pending);
+      const isOnline = typeof navigator !== 'undefined' ? navigator.onLine : true;
+
+      setSyncStatus((prev) => ({
+        ...prev,
+        isSyncing: true,
+        pendingCount: hasPending ? 1 : 0
+      }));
+
+      // If pending changes exist and we are online, attempt flush first
+      if (hasPending && isOnline) {
+        await flushPendingSync();
+      }
+
+      // Background remote sync from authoritative source (GitHub via Worker / Pages)
       const syncResult = await syncCatalogueFromRemote();
-      
+
       const freshRecipes = await getAllRecipes();
       const freshCategories = await getAllCategories();
+      const updatedPending = await getPendingSync();
+
       setRecipes(freshRecipes);
       setCategories(freshCategories);
 
       setSyncStatus((prev) => ({
         ...prev,
         isSyncing: false,
-        lastSyncTime: syncResult.lastSyncTime
+        pendingCount: updatedPending ? 1 : 0,
+        syncState: updatedPending ? (isOnline ? 'failed' : 'offline_pending') : 'synced',
+        lastSyncTime: syncResult.lastSyncTime,
+        error: syncResult.error || null
       }));
     } catch (err) {
       console.warn('Initial load / sync issue:', err);
@@ -116,11 +142,9 @@ export const App: React.FC = () => {
       const urlParams = new URLSearchParams(window.location.search);
       const sharedUrl = urlParams.get('url') || urlParams.get('text');
       if (sharedUrl && (sharedUrl.startsWith('http') || sharedUrl.includes('youtu'))) {
-        // Extract URL from text if shared as combo
         const match = sharedUrl.match(/(https?:\/\/[^\s]+)/g);
         const targetUrl = match ? match[0] : sharedUrl;
-        
-        // Open Add Recipe modal pre-filled
+
         setEditingRecipe({
           id: '',
           name: urlParams.get('title') || '',
@@ -130,7 +154,6 @@ export const App: React.FC = () => {
         });
         setIsAddModalOpen(true);
 
-        // Clean up URL without reload
         window.history.replaceState({}, document.title, window.location.pathname);
       }
     } catch (e) {
@@ -158,19 +181,52 @@ export const App: React.FC = () => {
   // Recipe CRUD actions (Editor only)
   const handleSaveRecipe = async (recipe: Recipe) => {
     try {
+      // 1. Stage in local cache immediately so UI is responsive
       await dbAddOrUpdateRecipe(recipe);
       const updatedList = await getAllRecipes();
       setRecipes(updatedList);
-      showToast(`Saved "${recipe.name}"`);
 
-      // Optimistic background sync to GitHub
-      pushCatalogueToGitHub(updatedList, categories).then((res) => {
-        if (!res.success) {
-          console.warn('Sync note:', res.message);
-        }
-      });
-    } catch (err) {
-      console.error('Save failed:', err);
+      // 2. Authenticated write to GitHub via Worker
+      setSyncStatus((prev) => ({ ...prev, isSyncing: true }));
+      const syncRes = await pushCatalogueToGitHub(updatedList, categories);
+
+      if (syncRes.success) {
+        setSyncStatus((prev) => ({
+          ...prev,
+          isSyncing: false,
+          syncState: 'synced',
+          pendingCount: 0,
+          error: null
+        }));
+        showToast(`Saved "${recipe.name}" & synced to GitHub!`);
+      } else if (syncRes.isOffline) {
+        setSyncStatus((prev) => ({
+          ...prev,
+          isSyncing: false,
+          syncState: 'offline_pending',
+          pendingCount: 1,
+          error: null
+        }));
+        showToast(`Saved locally — pending sync to GitHub (offline)`);
+      } else {
+        setSyncStatus((prev) => ({
+          ...prev,
+          isSyncing: false,
+          syncState: 'failed',
+          pendingCount: 1,
+          error: syncRes.message
+        }));
+        showToast(`Saved locally, but NOT synced to GitHub: ${syncRes.message}`);
+      }
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err);
+      setSyncStatus((prev) => ({
+        ...prev,
+        isSyncing: false,
+        syncState: 'failed',
+        error: msg
+      }));
+      showToast(`Error saving recipe: ${msg}`);
     }
   };
 
@@ -179,11 +235,40 @@ export const App: React.FC = () => {
       await dbDeleteRecipe(recipeId);
       const updatedList = await getAllRecipes();
       setRecipes(updatedList);
-      showToast('Recipe deleted.');
 
-      pushCatalogueToGitHub(updatedList, categories);
-    } catch (err) {
-      console.error('Delete failed:', err);
+      setSyncStatus((prev) => ({ ...prev, isSyncing: true }));
+      const syncRes = await pushCatalogueToGitHub(updatedList, categories);
+
+      if (syncRes.success) {
+        setSyncStatus((prev) => ({
+          ...prev,
+          isSyncing: false,
+          syncState: 'synced',
+          pendingCount: 0,
+          error: null
+        }));
+        showToast('Recipe deleted & synced to GitHub.');
+      } else if (syncRes.isOffline) {
+        setSyncStatus((prev) => ({
+          ...prev,
+          isSyncing: false,
+          syncState: 'offline_pending',
+          pendingCount: 1
+        }));
+        showToast('Deleted locally — pending sync to GitHub (offline)');
+      } else {
+        setSyncStatus((prev) => ({
+          ...prev,
+          isSyncing: false,
+          syncState: 'failed',
+          pendingCount: 1,
+          error: syncRes.message
+        }));
+        showToast(`Deleted locally, but NOT synced to GitHub: ${syncRes.message}`);
+      }
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err);
+      showToast(`Delete failed: ${msg}`);
     }
   };
 
@@ -202,10 +287,68 @@ export const App: React.FC = () => {
 
   // Categories Save action
   const handleSaveCategories = async (updatedCategories: Category[]) => {
-    setCategories(updatedCategories);
-    await saveCategories(updatedCategories);
-    pushCatalogueToGitHub(recipes, updatedCategories);
-    showToast('Categories updated.');
+    try {
+      setCategories(updatedCategories);
+      await saveCategories(updatedCategories);
+
+      setSyncStatus((prev) => ({ ...prev, isSyncing: true }));
+      const syncRes = await pushCatalogueToGitHub(recipes, updatedCategories);
+
+      if (syncRes.success) {
+        setSyncStatus((prev) => ({
+          ...prev,
+          isSyncing: false,
+          syncState: 'synced',
+          pendingCount: 0,
+          error: null
+        }));
+        showToast('Categories updated & synced to GitHub.');
+      } else if (syncRes.isOffline) {
+        setSyncStatus((prev) => ({
+          ...prev,
+          isSyncing: false,
+          syncState: 'offline_pending',
+          pendingCount: 1
+        }));
+        showToast('Categories updated locally — pending sync (offline)');
+      } else {
+        setSyncStatus((prev) => ({
+          ...prev,
+          isSyncing: false,
+          syncState: 'failed',
+          pendingCount: 1,
+          error: syncRes.message
+        }));
+        showToast(`Categories updated locally, but NOT synced to GitHub: ${syncRes.message}`);
+      }
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err);
+      showToast(`Category update failed: ${msg}`);
+    }
+  };
+
+  const handleRetrySync = async () => {
+    setSyncStatus((prev) => ({ ...prev, isSyncing: true }));
+    const res = await flushPendingSync();
+    if (res.flushed) {
+      setSyncStatus((prev) => ({
+        ...prev,
+        isSyncing: false,
+        syncState: 'synced',
+        pendingCount: 0,
+        error: null
+      }));
+      showToast('Successfully synced pending changes to GitHub!');
+      await loadLocalAndSync();
+    } else {
+      setSyncStatus((prev) => ({
+        ...prev,
+        isSyncing: false,
+        syncState: 'failed',
+        error: res.message
+      }));
+      showToast(`Sync failed: ${res.message}`);
+    }
   };
 
   // Filter & Search Logic (Fast and local against cached recipes)
@@ -216,7 +359,6 @@ export const App: React.FC = () => {
     if (activeFilter.type === 'favourite') {
       result = result.filter((r) => r.favourite);
     } else if (activeFilter.type === 'recent') {
-      // Sort by createdAt / updatedAt descending
       result.sort((a, b) => {
         const timeA = new Date(a.createdAt || a.updatedAt || 0).getTime();
         const timeB = new Date(b.createdAt || b.updatedAt || 0).getTime();
@@ -277,7 +419,7 @@ export const App: React.FC = () => {
         {feedbackMessage && (
           <div
             style={{
-              background: '#241E1A',
+              background: syncStatus.syncState === 'failed' ? '#991B1B' : '#241E1A',
               color: '#FFFFFF',
               padding: '10px 16px',
               borderRadius: '12px',
@@ -409,6 +551,7 @@ export const App: React.FC = () => {
           categories={categories}
           onClose={() => setIsSettingsOpen(false)}
           onRefresh={loadLocalAndSync}
+          onRetrySync={handleRetrySync}
           onResetAccess={handleResetAccess}
           onOpenCategoryManager={() => setIsCategoryManagerOpen(true)}
         />

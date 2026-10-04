@@ -32,17 +32,16 @@ export interface AccessState {
 }
 
 export interface SyncConfig {
-  mode: 'local' | 'github_pat' | 'serverless';
-  githubOwner: string;
-  githubRepo: string;
-  githubBranch: string;
-  githubToken?: string; // Stored exclusively in device localStorage, never committed
-  serverlessUrl?: string;
+  serverlessUrl: string;
 }
+
+export type SyncState = 'synced' | 'syncing' | 'failed' | 'offline_pending';
 
 export interface SyncStatus {
   lastSyncTime: string | null;
   isOnline: boolean;
   isSyncing: boolean;
+  pendingCount: number;
+  syncState: SyncState;
   error: string | null;
 }

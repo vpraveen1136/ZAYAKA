@@ -54,7 +54,16 @@ export const Header: React.FC<HeaderProps> = ({
           {!syncStatus.isOnline ? (
             <>
               <WifiOff size={11} color="#D97706" />
-              <span style={{ color: '#D97706' }}>Offline — showing saved catalogue</span>
+              <span style={{ color: '#D97706' }}>
+                {syncStatus.pendingCount > 0
+                  ? `Offline — ${syncStatus.pendingCount} pending sync`
+                  : 'Offline — showing saved catalogue'}
+              </span>
+            </>
+          ) : syncStatus.syncState === 'failed' ? (
+            <>
+              <span className="sync-dot offline" style={{ background: '#DC2626' }} />
+              <span style={{ color: '#DC2626', fontWeight: 600 }}>Not synced to GitHub</span>
             </>
           ) : syncStatus.isSyncing ? (
             <>

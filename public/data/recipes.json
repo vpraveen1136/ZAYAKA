@@ -1,13 +1,40 @@
 [
   {
+    "id": "R_VERIFY_9221",
+    "name": "Vegetable Biryani (Sync Verified)",
+    "url": "https://www.youtube.com/watch?v=biryani_sync_test",
+    "source": "youtube",
+    "meal": [
+      "lunch",
+      "dinner"
+    ],
+    "category": "lunch-dinner",
+    "subCategory": "Rice",
+    "tags": [
+      "aromatic",
+      "hyderabadi"
+    ],
+    "favourite": true,
+    "addedBy": "family",
+    "createdAt": "2026-10-04T12:58:19.221Z",
+    "updatedAt": "2026-10-04T12:58:19.221Z"
+  },
+  {
     "id": "R0001",
     "name": "Paneer Butter Masala",
     "url": "https://www.youtube.com/watch?v=k_l5fN0tI9c",
     "source": "youtube",
-    "meal": ["lunch", "dinner"],
+    "meal": [
+      "lunch",
+      "dinner"
+    ],
     "category": "lunch-dinner",
     "subCategory": "Sabzi (Paneer)",
-    "tags": ["north-indian", "creamy", "gravy"],
+    "tags": [
+      "north-indian",
+      "creamy",
+      "gravy"
+    ],
     "favourite": true,
     "addedBy": "family",
     "createdAt": "2026-10-01T10:30:00Z",
@@ -18,10 +45,17 @@
     "name": "Kanda Poha",
     "url": "https://www.youtube.com/watch?v=J32V_rL3Uls",
     "source": "youtube",
-    "meal": ["breakfast", "tea"],
+    "meal": [
+      "breakfast",
+      "tea"
+    ],
     "category": "breakfast",
     "subCategory": "Poha",
-    "tags": ["maharashtrian", "quick", "light"],
+    "tags": [
+      "maharashtrian",
+      "quick",
+      "light"
+    ],
     "favourite": true,
     "addedBy": "family",
     "createdAt": "2026-10-01T11:00:00Z",
@@ -32,10 +66,16 @@
     "name": "Dal Tadka (Dhaba Style)",
     "url": "https://www.youtube.com/watch?v=VpY9gK6zH4o",
     "source": "youtube",
-    "meal": ["lunch", "dinner"],
+    "meal": [
+      "lunch",
+      "dinner"
+    ],
     "category": "lunch-dinner",
     "subCategory": "Dal",
-    "tags": ["yellow-dal", "comfort-food"],
+    "tags": [
+      "yellow-dal",
+      "comfort-food"
+    ],
     "favourite": false,
     "addedBy": "family",
     "createdAt": "2026-10-02T12:00:00Z",
@@ -46,10 +86,17 @@
     "name": "Crispy Aloo Paratha",
     "url": "https://www.youtube.com/watch?v=wX5yL8qE1nA",
     "source": "youtube",
-    "meal": ["breakfast", "lunch"],
+    "meal": [
+      "breakfast",
+      "lunch"
+    ],
     "category": "breakfast",
     "subCategory": "Paratha",
-    "tags": ["punjabi", "stuffing", "curd"],
+    "tags": [
+      "punjabi",
+      "stuffing",
+      "curd"
+    ],
     "favourite": true,
     "addedBy": "family",
     "createdAt": "2026-10-02T14:15:00Z",
@@ -60,10 +107,16 @@
     "name": "Crispy Onion Pakoda",
     "url": "https://www.youtube.com/watch?v=q1o9X_8E9iQ",
     "source": "youtube",
-    "meal": ["tea"],
+    "meal": [
+      "tea"
+    ],
     "category": "tea-snacks",
     "subCategory": "Pakoda",
-    "tags": ["monsoon", "crunchy", "chai-time"],
+    "tags": [
+      "monsoon",
+      "crunchy",
+      "chai-time"
+    ],
     "favourite": false,
     "addedBy": "family",
     "createdAt": "2026-10-03T16:30:00Z",
@@ -74,10 +127,16 @@
     "name": "Gulab Jamun",
     "url": "https://www.youtube.com/watch?v=jK7P9eL2r0s",
     "source": "youtube",
-    "meal": ["dinner"],
+    "meal": [
+      "dinner"
+    ],
     "category": "sweets",
     "subCategory": "Indian",
-    "tags": ["dessert", "festival", "khoya"],
+    "tags": [
+      "dessert",
+      "festival",
+      "khoya"
+    ],
     "favourite": true,
     "addedBy": "family",
     "createdAt": "2026-10-03T18:00:00Z",

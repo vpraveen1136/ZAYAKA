@@ -1,0 +1,11 @@
+name = "zayaka-sync"
+main = "worker/sync-worker.js"
+compatibility_date = "2024-01-01"
+
+[vars]
+GITHUB_OWNER = "vpraveen1136"
+GITHUB_REPO = "ZAYAKA"
+GITHUB_BRANCH = "main"
+EDITOR_CODE_HASH = "b807040a60f02e4202511469f1a1715aeb626261c2ee9bb3952875e648e202cd"
+
+# Set secret via: npx wrangler secret put GITHUB_TOKEN

@@ -180,3 +180,21 @@ export async function setMetadata(key: string, value: any): Promise<void> {
     console.error('LocalStorage metadata write failed:', e);
   }
 }
+
+export interface PendingSyncPayload {
+  recipes?: Recipe[];
+  categories?: Category[];
+  timestamp: string;
+}
+
+export async function getPendingSync(): Promise<PendingSyncPayload | null> {
+  return await getMetadata('pending_sync');
+}
+
+export async function setPendingSync(payload: PendingSyncPayload): Promise<void> {
+  await setMetadata('pending_sync', payload);
+}
+
+export async function clearPendingSync(): Promise<void> {
+  await setMetadata('pending_sync', null);
+}

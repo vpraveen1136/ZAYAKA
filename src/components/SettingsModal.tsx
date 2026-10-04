@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { X, RefreshCw, LogOut, FolderTree, Download, Shield, Check } from 'lucide-react';
+import { X, RefreshCw, LogOut, FolderTree, Download, Cloud, Check, AlertCircle } from 'lucide-react';
 import { AccessRole, SyncStatus, SyncConfig, Recipe, Category } from '../types';
 import { getSyncConfig, saveSyncConfig } from '../services/sync';
+import { APP_VERSION } from '../config/version';
 
 interface SettingsModalProps {
   role: AccessRole | null;
@@ -10,6 +11,7 @@ interface SettingsModalProps {
   categories: Category[];
   onClose: () => void;
   onRefresh: () => void;
+  onRetrySync: () => void;
   onResetAccess: () => void;
   onOpenCategoryManager: () => void;
 }
@@ -21,17 +23,48 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
   categories,
   onClose,
   onRefresh,
+  onRetrySync,
   onResetAccess,
   onOpenCategoryManager
 }) => {
   const [syncConfig, setSyncConfig] = useState<SyncConfig>(getSyncConfig());
   const [saveSuccessMsg, setSaveSuccessMsg] = useState(false);
+  const [testResult, setTestResult] = useState<{ status: 'testing' | 'ok' | 'err'; message: string } | null>(null);
 
   const handleSaveSyncConfig = (e: React.FormEvent) => {
     e.preventDefault();
     saveSyncConfig(syncConfig);
     setSaveSuccessMsg(true);
     setTimeout(() => setSaveSuccessMsg(false), 2500);
+  };
+
+  const handleTestWorkerConnection = async () => {
+    if (!syncConfig.serverlessUrl) {
+      setTestResult({ status: 'err', message: 'Please enter a worker URL first.' });
+      return;
+    }
+    setTestResult({ status: 'testing', message: 'Testing connection to worker...' });
+    try {
+      const res = await fetch(`${syncConfig.serverlessUrl.replace(/\/+$/, '')}/health`, {
+        method: 'GET',
+        headers: { Accept: 'application/json' }
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setTestResult({
+          status: 'ok',
+          message: `Connected to Cloudflare Worker! Repo: ${data.repo || 'Connected'}`
+        });
+      } else {
+        setTestResult({
+          status: 'err',
+          message: `Worker returned HTTP ${res.status}. Please check URL.`
+        });
+      }
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err);
+      setTestResult({ status: 'err', message: `Cannot reach worker: ${msg}` });
+    }
   };
 
   const handleExportJson = () => {
@@ -123,33 +156,94 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
           </div>
 
           <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
-            <span style={{ fontSize: '0.86rem', color: 'var(--text-muted)' }}>Catalogue Sync</span>
+            <span style={{ fontSize: '0.86rem', color: 'var(--text-muted)' }}>GitHub Sync Status</span>
+            <span
+              style={{
+                fontSize: '0.86rem',
+                fontWeight: 600,
+                color:
+                  syncStatus.syncState === 'failed'
+                    ? '#DC2626'
+                    : syncStatus.pendingCount > 0
+                    ? '#D97706'
+                    : '#10B981'
+              }}
+            >
+              {syncStatus.syncState === 'failed'
+                ? 'Not synced to GitHub'
+                : syncStatus.pendingCount > 0
+                ? `${syncStatus.pendingCount} pending sync`
+                : 'Synced with GitHub'}
+            </span>
+          </div>
+
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
+            <span style={{ fontSize: '0.86rem', color: 'var(--text-muted)' }}>Last Synced</span>
             <span style={{ fontSize: '0.86rem', fontWeight: 600 }}>
               {formatLastSync(syncStatus.lastSyncTime)}
             </span>
           </div>
 
           <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
-            <span style={{ fontSize: '0.86rem', color: 'var(--text-muted)' }}>Catalogue in Storage</span>
+            <span style={{ fontSize: '0.86rem', color: 'var(--text-muted)' }}>Local Cache Copy</span>
             <span style={{ fontSize: '0.86rem', fontWeight: 600 }}>{recipes.length} recipes · {categories.length} categories</span>
           </div>
 
-          <button
-            type="button"
-            onClick={onRefresh}
-            style={{
-              width: '100%',
-              height: '42px',
-              background: '#FFFFFF',
-              border: '1px solid var(--border-subtle)',
-              fontSize: '0.88rem',
-              color: 'var(--text-main)',
-              gap: '6px'
-            }}
-          >
-            <RefreshCw size={16} />
-            <span>Refresh Catalogue Now</span>
-          </button>
+          {syncStatus.error && (
+            <div
+              style={{
+                background: '#FEF2F2',
+                border: '1px solid #FECACA',
+                color: '#DC2626',
+                padding: '8px 12px',
+                borderRadius: '8px',
+                fontSize: '0.82rem',
+                marginBottom: '10px',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px'
+              }}
+            >
+              <AlertCircle size={15} />
+              <span>{syncStatus.error}</span>
+            </div>
+          )}
+
+          <div style={{ display: 'flex', gap: '8px' }}>
+            <button
+              type="button"
+              onClick={onRefresh}
+              style={{
+                flex: 1,
+                height: '42px',
+                background: '#FFFFFF',
+                border: '1px solid var(--border-subtle)',
+                fontSize: '0.88rem',
+                color: 'var(--text-main)',
+                gap: '6px'
+              }}
+            >
+              <RefreshCw size={16} />
+              <span>Refresh Catalogue</span>
+            </button>
+
+            {(syncStatus.syncState === 'failed' || syncStatus.pendingCount > 0) && (
+              <button
+                type="button"
+                onClick={onRetrySync}
+                style={{
+                  flex: 1,
+                  height: '42px',
+                  background: 'var(--accent-terracotta)',
+                  color: '#FFFFFF',
+                  fontSize: '0.88rem',
+                  gap: '6px'
+                }}
+              >
+                <span>Retry Sync</span>
+              </button>
+            )}
+          </div>
         </div>
 
         {/* Editor Only Actions */}
@@ -197,7 +291,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
               </button>
             </div>
 
-            {/* GitHub Remote Sync Configuration */}
+            {/* Cloudflare Worker Synchronisation Configuration */}
             <div
               style={{
                 border: '1px solid var(--border-subtle)',
@@ -208,75 +302,25 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
               }}
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontWeight: 700, fontSize: '0.95rem', marginBottom: '6px' }}>
-                <Shield size={16} color="var(--accent-terracotta)" />
-                <span>GitHub Write Synchronisation</span>
+                <Cloud size={16} color="var(--accent-terracotta)" />
+                <span>Cloudflare Sync Worker</span>
               </div>
               <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '12px' }}>
-                Credentials are saved solely in this device&apos;s private storage and never committed to GitHub.
+                Performs secure writes to GitHub without storing tokens in the browser.
               </p>
 
               <form onSubmit={handleSaveSyncConfig}>
-                <div className="form-group" style={{ marginBottom: '10px' }}>
-                  <label className="form-label" style={{ fontSize: '0.8rem' }}>Write Mechanism</label>
-                  <select
-                    className="form-select"
-                    style={{ height: '40px', fontSize: '0.88rem' }}
-                    value={syncConfig.mode}
-                    onChange={(e) => setSyncConfig({ ...syncConfig, mode: e.target.value as any })}
-                  >
-                    <option value="local">Local Storage Only (Default / Offline Safe)</option>
-                    <option value="github_pat">Direct GitHub Token (Saved on this device)</option>
-                    <option value="serverless">Serverless Micro-Proxy Worker</option>
-                  </select>
+                <div className="form-group" style={{ marginBottom: '8px' }}>
+                  <label className="form-label" style={{ fontSize: '0.8rem' }}>Sync Worker URL</label>
+                  <input
+                    type="url"
+                    className="form-input"
+                    style={{ height: '40px', fontSize: '0.85rem' }}
+                    placeholder="https://zayaka-sync.<username>.workers.dev"
+                    value={syncConfig.serverlessUrl}
+                    onChange={(e) => setSyncConfig({ ...syncConfig, serverlessUrl: e.target.value })}
+                  />
                 </div>
-
-                {syncConfig.mode === 'github_pat' && (
-                  <>
-                    <div className="form-group" style={{ marginBottom: '8px' }}>
-                      <input
-                        type="text"
-                        className="form-input"
-                        style={{ height: '38px', fontSize: '0.85rem' }}
-                        placeholder="GitHub Owner (username/org)"
-                        value={syncConfig.githubOwner}
-                        onChange={(e) => setSyncConfig({ ...syncConfig, githubOwner: e.target.value })}
-                      />
-                    </div>
-                    <div className="form-group" style={{ marginBottom: '8px' }}>
-                      <input
-                        type="text"
-                        className="form-input"
-                        style={{ height: '38px', fontSize: '0.85rem' }}
-                        placeholder="GitHub Repository name"
-                        value={syncConfig.githubRepo}
-                        onChange={(e) => setSyncConfig({ ...syncConfig, githubRepo: e.target.value })}
-                      />
-                    </div>
-                    <div className="form-group" style={{ marginBottom: '8px' }}>
-                      <input
-                        type="password"
-                        className="form-input"
-                        style={{ height: '38px', fontSize: '0.85rem' }}
-                        placeholder="GitHub Fine-Grained Token (repo contents:write)"
-                        value={syncConfig.githubToken || ''}
-                        onChange={(e) => setSyncConfig({ ...syncConfig, githubToken: e.target.value })}
-                      />
-                    </div>
-                  </>
-                )}
-
-                {syncConfig.mode === 'serverless' && (
-                  <div className="form-group" style={{ marginBottom: '8px' }}>
-                    <input
-                      type="url"
-                      className="form-input"
-                      style={{ height: '38px', fontSize: '0.85rem' }}
-                      placeholder="https://zayaka-sync.yourworker.workers.dev"
-                      value={syncConfig.serverlessUrl || ''}
-                      onChange={(e) => setSyncConfig({ ...syncConfig, serverlessUrl: e.target.value })}
-                    />
-                  </div>
-                )}
 
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '10px' }}>
                   <button
@@ -289,20 +333,52 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                       fontSize: '0.85rem'
                     }}
                   >
-                    Save Sync Settings
+                    Save URL
                   </button>
+
+                  <button
+                    type="button"
+                    onClick={handleTestWorkerConnection}
+                    style={{
+                      height: '38px',
+                      padding: '0 12px',
+                      background: '#FFFFFF',
+                      border: '1px solid var(--border-subtle)',
+                      color: 'var(--text-main)',
+                      fontSize: '0.85rem'
+                    }}
+                  >
+                    Test Connection
+                  </button>
+
                   {saveSuccessMsg && (
                     <span style={{ fontSize: '0.82rem', color: '#10B981', display: 'flex', alignItems: 'center', gap: '4px' }}>
                       <Check size={14} /> Saved!
                     </span>
                   )}
                 </div>
+
+                {testResult && (
+                  <div
+                    style={{
+                      marginTop: '10px',
+                      padding: '8px 10px',
+                      borderRadius: '8px',
+                      fontSize: '0.82rem',
+                      background: testResult.status === 'ok' ? '#ECFDF5' : '#FEF2F2',
+                      color: testResult.status === 'ok' ? '#065F46' : '#991B1B',
+                      border: `1px solid ${testResult.status === 'ok' ? '#A7F3D0' : '#FECACA'}`
+                    }}
+                  >
+                    {testResult.message}
+                  </div>
+                )}
               </form>
             </div>
           </>
         )}
 
-        {/* Switch Access / Sign Out (Requirement 2) */}
+        {/* Switch Access / Sign Out */}
         <div style={{ marginTop: '16px' }}>
           <button
             type="button"
@@ -322,9 +398,9 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
           </button>
         </div>
 
-        {/* Version info */}
+        {/* Version info (Requirement: versioning visible in settings page) */}
         <div style={{ textAlign: 'center', marginTop: '20px', fontSize: '0.76rem', color: '#9CA3AF' }}>
-          ZAYAKA v1.0.0 · Family Recipe Catalogue PWA
+          ZAYAKA v{APP_VERSION} · Family Recipe Catalogue PWA
         </div>
       </div>
     </div>
