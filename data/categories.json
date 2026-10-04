@@ -1,0 +1,51 @@
+[
+  {
+    "id": "breakfast",
+    "name": "Breakfast",
+    "subCategories": [
+      "Paratha",
+      "Poha",
+      "Upma",
+      "South Indian",
+      "Eggs",
+      "Sandwich",
+      "Other"
+    ]
+  },
+  {
+    "id": "lunch-dinner",
+    "name": "Lunch / Dinner",
+    "subCategories": [
+      "Dal",
+      "Sabzi (Dry)",
+      "Sabzi (Gravy)",
+      "Sabzi (Paneer)",
+      "Rice",
+      "Roti / Paratha",
+      "Non-Veg",
+      "Salad / Raita",
+      "Other"
+    ]
+  },
+  {
+    "id": "tea-snacks",
+    "name": "Tea / Snacks",
+    "subCategories": [
+      "Pakoda",
+      "Chaat",
+      "Sandwich",
+      "Bakery",
+      "Namkeen",
+      "Other"
+    ]
+  },
+  {
+    "id": "sweets",
+    "name": "Sweets",
+    "subCategories": [
+      "Indian",
+      "Western",
+      "Other"
+    ]
+  }
+]
