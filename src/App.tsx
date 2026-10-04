@@ -144,9 +144,9 @@ export const App: React.FC = () => {
   }, [loadLocalAndSync]);
 
   // Auth callbacks
-  const handleAuthSuccess = (role: AccessRole, code: string) => {
-    setAccess({ code, role, isLoggedIn: true });
-    showToast(`Welcome! Logged in as ${role === 'editor' ? 'Editor (BAWARCHI)' : 'Viewer (ZAYAKA)'}`);
+  const handleAuthSuccess = (role: AccessRole) => {
+    setAccess({ code: null, role, isLoggedIn: true });
+    showToast(`Welcome! Logged in as ${role === 'editor' ? 'Editor' : 'Viewer'}`);
   };
 
   const handleResetAccess = () => {
@@ -353,7 +353,7 @@ export const App: React.FC = () => {
         )}
       </main>
 
-      {/* Floating Action Button "+ Add Recipe" (Visible ONLY to Editor BAWARCHI) */}
+      {/* Floating Action Button "+ Add Recipe" (Visible ONLY to Editor) */}
       {access.role === 'editor' && (
         <button
           type="button"

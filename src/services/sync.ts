@@ -7,6 +7,7 @@ import {
   getMetadata,
   setMetadata
 } from './storage';
+import { getStoredEditorCredential } from './auth';
 
 const CONFIG_KEY = 'zayaka_sync_config';
 
@@ -183,11 +184,19 @@ export async function pushCatalogueToGitHub(
   // Mode: Serverless worker micro-proxy
   if (config.mode === 'serverless' && config.serverlessUrl) {
     try {
+      const editorCredential = getStoredEditorCredential();
+      if (!editorCredential) {
+        return {
+          success: false,
+          message: 'Unauthorized: Valid editor credential required for write operations.'
+        };
+      }
+
       const res = await fetch(config.serverlessUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'X-Access-Code': 'BAWARCHI'
+          'X-Access-Code': editorCredential
         },
         body: JSON.stringify({
           action: 'write',

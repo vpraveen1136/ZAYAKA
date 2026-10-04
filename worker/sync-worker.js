@@ -27,11 +27,15 @@ export default {
       return new Response('Method Not Allowed', { status: 405 });
     }
 
-    // Verify lightweight editor access code
-    const accessCode = request.headers.get('X-Access-Code') || '';
-    const expectedCode = env.ACCESS_CODE || 'BAWARCHI';
-    if (accessCode.trim().toUpperCase() !== expectedCode.toUpperCase()) {
-      return new Response(JSON.stringify({ error: 'Unauthorized: Invalid access code' }), {
+    // Verify lightweight editor access code independently using SHA-256
+    const rawAccess = (request.headers.get('X-Access-Code') || '').trim().toUpperCase();
+    const encoder = new TextEncoder();
+    const hashBuffer = await crypto.subtle.digest('SHA-256', encoder.encode(rawAccess));
+    const hashHex = Array.from(new Uint8Array(hashBuffer)).map((b) => b.toString(16).padStart(2, '0')).join('');
+
+    const expectedHash = env.EDITOR_CODE_HASH || 'b807040a60f02e4202511469f1a1715aeb626261c2ee9bb3952875e648e202cd';
+    if (hashHex !== expectedHash) {
+      return new Response(JSON.stringify({ error: 'Unauthorized: Invalid editor credential' }), {
         status: 401,
         headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
       });

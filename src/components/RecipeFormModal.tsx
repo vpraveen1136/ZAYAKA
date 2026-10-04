@@ -149,7 +149,7 @@ export const RecipeFormModal: React.FC<RecipeFormModalProps> = ({
       subCategory: subCategory.trim() || undefined,
       tags: tags.length > 0 ? tags : undefined,
       favourite,
-      addedBy: initialRecipe?.addedBy || 'BAWARCHI',
+      addedBy: initialRecipe?.addedBy || 'family',
       createdAt: initialRecipe?.createdAt || now,
       updatedAt: now
     };

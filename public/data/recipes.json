@@ -9,7 +9,7 @@
     "subCategory": "Sabzi (Paneer)",
     "tags": ["north-indian", "creamy", "gravy"],
     "favourite": true,
-    "addedBy": "BAWARCHI",
+    "addedBy": "family",
     "createdAt": "2026-10-01T10:30:00Z",
     "updatedAt": "2026-10-01T10:30:00Z"
   },
@@ -23,7 +23,7 @@
     "subCategory": "Poha",
     "tags": ["maharashtrian", "quick", "light"],
     "favourite": true,
-    "addedBy": "BAWARCHI",
+    "addedBy": "family",
     "createdAt": "2026-10-01T11:00:00Z",
     "updatedAt": "2026-10-01T11:00:00Z"
   },
@@ -37,7 +37,7 @@
     "subCategory": "Dal",
     "tags": ["yellow-dal", "comfort-food"],
     "favourite": false,
-    "addedBy": "BAWARCHI",
+    "addedBy": "family",
     "createdAt": "2026-10-02T12:00:00Z",
     "updatedAt": "2026-10-02T12:00:00Z"
   },
@@ -51,7 +51,7 @@
     "subCategory": "Paratha",
     "tags": ["punjabi", "stuffing", "curd"],
     "favourite": true,
-    "addedBy": "BAWARCHI",
+    "addedBy": "family",
     "createdAt": "2026-10-02T14:15:00Z",
     "updatedAt": "2026-10-02T14:15:00Z"
   },
@@ -65,7 +65,7 @@
     "subCategory": "Pakoda",
     "tags": ["monsoon", "crunchy", "chai-time"],
     "favourite": false,
-    "addedBy": "BAWARCHI",
+    "addedBy": "family",
     "createdAt": "2026-10-03T16:30:00Z",
     "updatedAt": "2026-10-03T16:30:00Z"
   },
@@ -79,7 +79,7 @@
     "subCategory": "Indian",
     "tags": ["dessert", "festival", "khoya"],
     "favourite": true,
-    "addedBy": "BAWARCHI",
+    "addedBy": "family",
     "createdAt": "2026-10-03T18:00:00Z",
     "updatedAt": "2026-10-03T18:00:00Z"
   }

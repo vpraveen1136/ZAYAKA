@@ -4,22 +4,30 @@ import { AccessRole } from '../types';
 import { Utensils } from 'lucide-react';
 
 interface WelcomeModalProps {
-  onSuccess: (role: AccessRole, code: string) => void;
+  onSuccess: (role: AccessRole) => void;
 }
 
 export const WelcomeModal: React.FC<WelcomeModalProps> = ({ onSuccess }) => {
   const [code, setCode] = useState('');
   const [error, setError] = useState<string | null>(null);
+  const [isVerifying, setIsVerifying] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
+    setIsVerifying(true);
 
-    const result = verifyAndSaveAccess(code);
-    if (result.success && result.role) {
-      onSuccess(result.role, code.trim().toUpperCase());
-    } else {
-      setError(result.error || 'Invalid code');
+    try {
+      const result = await verifyAndSaveAccess(code);
+      if (result.success && result.role) {
+        onSuccess(result.role);
+      } else {
+        setError(result.error || 'Invalid access code.');
+      }
+    } catch {
+      setError('An error occurred during verification.');
+    } finally {
+      setIsVerifying(false);
     }
   };
 
@@ -65,10 +73,9 @@ export const WelcomeModal: React.FC<WelcomeModalProps> = ({ onSuccess }) => {
           <Utensils size={32} />
         </div>
 
-        <h2 style={{ fontSize: '1.75rem', marginBottom: '6px' }}>Welcome to ZAYAKA</h2>
-        <p style={{ color: 'var(--text-muted)', fontSize: '0.92rem', marginBottom: '24px' }}>
-          Enter access code to continue to the family recipe catalogue
-        </p>
+        <h2 style={{ fontSize: '1.6rem', marginBottom: '24px', lineHeight: 1.3 }}>
+          Enter access code to continue
+        </h2>
 
         <form onSubmit={handleSubmit}>
           <div style={{ marginBottom: '16px' }}>
@@ -77,11 +84,12 @@ export const WelcomeModal: React.FC<WelcomeModalProps> = ({ onSuccess }) => {
               className="form-input"
               value={code}
               onChange={(e) => setCode(e.target.value.toUpperCase())}
-              placeholder="Enter access code"
+              placeholder="Access code"
               autoCapitalize="characters"
               autoCorrect="off"
               spellCheck="false"
               autoFocus
+              disabled={isVerifying}
               style={{
                 textAlign: 'center',
                 letterSpacing: '0.15em',
@@ -106,6 +114,7 @@ export const WelcomeModal: React.FC<WelcomeModalProps> = ({ onSuccess }) => {
 
           <button
             type="submit"
+            disabled={isVerifying}
             style={{
               width: '100%',
               height: '50px',
@@ -113,16 +122,13 @@ export const WelcomeModal: React.FC<WelcomeModalProps> = ({ onSuccess }) => {
               color: '#FFFFFF',
               fontSize: '1.05rem',
               fontWeight: 700,
-              borderRadius: '14px'
+              borderRadius: '14px',
+              opacity: isVerifying ? 0.7 : 1
             }}
           >
-            Continue
+            {isVerifying ? 'Checking...' : 'Continue'}
           </button>
         </form>
-
-        <div style={{ marginTop: '20px', fontSize: '0.78rem', color: '#9CA3AF' }}>
-          Viewer: <code>ZAYAKA</code> &nbsp;·&nbsp; Editor: <code>BAWARCHI</code>
-        </div>
       </div>
     </div>
   );

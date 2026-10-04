@@ -44,7 +44,7 @@ export const Header: React.FC<HeaderProps> = ({
                 letterSpacing: '0.04em'
               }}
             >
-              {role === 'editor' ? 'BAWARCHI' : 'VIEWER'}
+              {role === 'editor' ? 'Editor' : 'Viewer'}
             </span>
           )}
         </div>

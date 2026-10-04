@@ -94,7 +94,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                 color: role === 'editor' ? '#92400E' : '#0369A1'
               }}
             >
-              {role === 'editor' ? 'BAWARCHI (Editor)' : 'ZAYAKA (Viewer)'}
+              {role === 'editor' ? 'Editor' : 'Viewer'}
             </span>
           </div>
 
