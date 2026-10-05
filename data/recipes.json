@@ -1,25 +1,5 @@
 [
   {
-    "id": "R0006",
-    "name": "Gulab Jamun",
-    "url": "https://www.youtube.com/watch?v=jK7P9eL2r0s",
-    "source": "youtube",
-    "meal": [
-      "dinner"
-    ],
-    "category": "sweets",
-    "subCategory": "Indian",
-    "tags": [
-      "dessert",
-      "festival",
-      "khoya"
-    ],
-    "favourite": true,
-    "addedBy": "family",
-    "createdAt": "2026-10-03T18:00:00Z",
-    "updatedAt": "2026-10-03T18:00:00Z"
-  },
-  {
     "id": "R_VERIFY_9221",
     "name": "Vegetable Biryani (Sync Verified)",
     "url": "https://www.youtube.com/watch?v=biryani_sync_test",
