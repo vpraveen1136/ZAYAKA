@@ -494,9 +494,33 @@ export const App: React.FC = () => {
             <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>
               {searchQuery
                 ? `No recipes match "${searchQuery}". Try a different keyword.`
-                : 'No recipes in this category yet.'}
+                : 'No recipes match the selected filters.'}
             </p>
-            {access.role === 'editor' && (
+            {(primaryFilter !== 'all' || mealFilter !== 'all' || subCategoryFilter !== 'all' || searchQuery) && (
+              <button
+                type="button"
+                onClick={() => {
+                  setPrimaryFilter('all');
+                  setMealFilter('all');
+                  setSubCategoryFilter('all');
+                  setSearchQuery('');
+                }}
+                style={{
+                  marginTop: '14px',
+                  background: 'var(--chip-bg)',
+                  color: 'var(--text-main)',
+                  border: '1px solid var(--border-subtle)',
+                  padding: '0 16px',
+                  height: '38px',
+                  fontSize: '0.86rem',
+                  borderRadius: '19px',
+                  fontWeight: 600
+                }}
+              >
+                Clear all filters
+              </button>
+            )}
+            {access.role === 'editor' && !searchQuery && primaryFilter === 'all' && mealFilter === 'all' && (
               <button
                 type="button"
                 onClick={() => {

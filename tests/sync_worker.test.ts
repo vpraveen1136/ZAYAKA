@@ -139,6 +139,6 @@ describe('GitHub Synchronization & Worker Layer', () => {
   });
 
   it('verifies PWA versioning is defined and updated', () => {
-    expect(APP_VERSION).toBe('1.3.0');
+    expect(APP_VERSION).toBe('1.3.1');
   });
 });
