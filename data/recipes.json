@@ -1,67 +1,5 @@
 [
   {
-    "id": "R_VERIFY_9221",
-    "name": "Vegetable Biryani (Sync Verified)",
-    "url": "https://www.youtube.com/watch?v=biryani_sync_test",
-    "source": "youtube",
-    "meal": [
-      "lunch",
-      "dinner"
-    ],
-    "category": "lunch-dinner",
-    "subCategory": "Rice",
-    "tags": [
-      "aromatic",
-      "hyderabadi"
-    ],
-    "favourite": true,
-    "addedBy": "family",
-    "createdAt": "2026-10-04T12:58:19.221Z",
-    "updatedAt": "2026-10-04T12:58:19.221Z"
-  },
-  {
-    "id": "R0001",
-    "name": "Paneer Butter Masala",
-    "url": "https://www.youtube.com/watch?v=k_l5fN0tI9c",
-    "source": "youtube",
-    "meal": [
-      "lunch",
-      "dinner"
-    ],
-    "category": "lunch-dinner",
-    "subCategory": "Sabzi (Paneer)",
-    "tags": [
-      "north-indian",
-      "creamy",
-      "gravy"
-    ],
-    "favourite": true,
-    "addedBy": "family",
-    "createdAt": "2026-10-01T10:30:00Z",
-    "updatedAt": "2026-10-01T10:30:00Z"
-  },
-  {
-    "id": "R0002",
-    "name": "Kanda Poha",
-    "url": "https://www.youtube.com/watch?v=J32V_rL3Uls",
-    "source": "youtube",
-    "meal": [
-      "breakfast",
-      "tea"
-    ],
-    "category": "breakfast",
-    "subCategory": "Poha",
-    "tags": [
-      "maharashtrian",
-      "quick",
-      "light"
-    ],
-    "favourite": true,
-    "addedBy": "family",
-    "createdAt": "2026-10-01T11:00:00Z",
-    "updatedAt": "2026-10-01T11:00:00Z"
-  },
-  {
     "id": "R0003",
     "name": "Dal Tadka (Dhaba Style)",
     "url": "https://www.youtube.com/watch?v=VpY9gK6zH4o",
@@ -141,5 +79,25 @@
     "addedBy": "family",
     "createdAt": "2026-10-03T18:00:00Z",
     "updatedAt": "2026-10-03T18:00:00Z"
+  },
+  {
+    "id": "R_VERIFY_9221",
+    "name": "Vegetable Biryani (Sync Verified)",
+    "url": "https://www.youtube.com/watch?v=biryani_sync_test",
+    "source": "youtube",
+    "meal": [
+      "lunch",
+      "dinner"
+    ],
+    "category": "lunch-dinner",
+    "subCategory": "Rice",
+    "tags": [
+      "aromatic",
+      "hyderabadi"
+    ],
+    "favourite": true,
+    "addedBy": "family",
+    "createdAt": "2026-10-04T12:58:19.221Z",
+    "updatedAt": "2026-10-04T12:58:19.221Z"
   }
 ]
