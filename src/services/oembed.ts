@@ -1,8 +1,55 @@
 import { RecipeSource } from '../types';
 
-export function isYouTubeUrl(url: string): boolean {
-  if (!url) return false;
-  return /(?:youtube\.com\/(?:watch\?v=|shorts\/)|youtu\.be\/)/i.test(url.trim());
+/**
+ * Extract YouTube video ID from common YouTube URL formats:
+ * - https://www.youtube.com/watch?v=VIDEO_ID
+ * - https://youtu.be/VIDEO_ID
+ * - https://www.youtube.com/shorts/VIDEO_ID
+ * - https://www.youtube.com/embed/VIDEO_ID
+ * Safely returns null for non-YouTube URLs or invalid URLs.
+ */
+export function extractYouTubeVideoId(url: string | null | undefined): string | null {
+  if (!url || typeof url !== 'string') return null;
+  const trimmed = url.trim();
+  if (!trimmed) return null;
+
+  try {
+    // 1. Check youtu.be/VIDEO_ID
+    const youtuBeMatch = trimmed.match(/^https?:\/\/(?:www\.|m\.)?youtu\.be\/([a-zA-Z0-9_-]+)/i);
+    if (youtuBeMatch && youtuBeMatch[1]) {
+      return youtuBeMatch[1];
+    }
+
+    // 2. Check youtube.com/shorts/VIDEO_ID or youtube.com/embed/VIDEO_ID
+    const pathMatch = trimmed.match(/^https?:\/\/(?:www\.|m\.)?youtube(?:-nocookie)?\.com\/(?:shorts|embed)\/([a-zA-Z0-9_-]+)/i);
+    if (pathMatch && pathMatch[1]) {
+      return pathMatch[1];
+    }
+
+    // 3. Check youtube.com/watch?v=VIDEO_ID
+    const watchMatch = trimmed.match(/^https?:\/\/(?:www\.|m\.)?youtube(?:-nocookie)?\.com\/watch\?[^#]*\bv=([a-zA-Z0-9_-]+)/i);
+    if (watchMatch && watchMatch[1]) {
+      return watchMatch[1];
+    }
+  } catch {
+    return null;
+  }
+
+  return null;
+}
+
+/**
+ * Generate YouTube medium quality thumbnail URL from video ID:
+ * https://i.ytimg.com/vi/{VIDEO_ID}/mqdefault.jpg
+ */
+export function getYouTubeThumbnailUrl(url: string | null | undefined): string | null {
+  const videoId = extractYouTubeVideoId(url);
+  if (!videoId) return null;
+  return `https://i.ytimg.com/vi/${videoId}/mqdefault.jpg`;
+}
+
+export function isYouTubeUrl(url: string | null | undefined): boolean {
+  return extractYouTubeVideoId(url) !== null;
 }
 
 export function detectSource(url: string): RecipeSource {

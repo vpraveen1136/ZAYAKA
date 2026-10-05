@@ -28,6 +28,15 @@
     ]
   },
   {
+    "id": "sweets",
+    "name": "Sweets",
+    "subCategories": [
+      "Indian",
+      "Western",
+      "Other"
+    ]
+  },
+  {
     "id": "tea-snacks",
     "name": "Tea / Snacks",
     "subCategories": [
@@ -36,15 +45,6 @@
       "Sandwich",
       "Bakery",
       "Namkeen",
-      "Other"
-    ]
-  },
-  {
-    "id": "sweets",
-    "name": "Sweets",
-    "subCategories": [
-      "Indian",
-      "Western",
       "Other"
     ]
   }
