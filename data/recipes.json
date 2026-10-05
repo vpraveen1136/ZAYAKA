@@ -1,1 +1,21 @@
-[]
+[
+  {
+    "id": "R02213",
+    "name": "Soyabean Chilla",
+    "url": "https://www.youtube.com/shorts/3U8d0F3AwlI",
+    "source": "youtube",
+    "meal": [
+      "breakfast"
+    ],
+    "category": "breakfast",
+    "tags": [
+      "chilla",
+      "soyabean",
+      "nutri-nuggets"
+    ],
+    "favourite": false,
+    "addedBy": "family",
+    "createdAt": "2026-10-05T12:45:02.213Z",
+    "updatedAt": "2026-10-05T12:45:02.213Z"
+  }
+]
