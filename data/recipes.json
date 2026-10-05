@@ -1,26 +1,5 @@
 [
   {
-    "id": "R0004",
-    "name": "Crispy Aloo Paratha",
-    "url": "https://www.youtube.com/watch?v=wX5yL8qE1nA",
-    "source": "youtube",
-    "meal": [
-      "breakfast",
-      "lunch"
-    ],
-    "category": "breakfast",
-    "subCategory": "Paratha",
-    "tags": [
-      "punjabi",
-      "stuffing",
-      "curd"
-    ],
-    "favourite": true,
-    "addedBy": "family",
-    "createdAt": "2026-10-02T14:15:00Z",
-    "updatedAt": "2026-10-02T14:15:00Z"
-  },
-  {
     "id": "R0005",
     "name": "Crispy Onion Pakoda",
     "url": "https://www.youtube.com/watch?v=q1o9X_8E9iQ",
