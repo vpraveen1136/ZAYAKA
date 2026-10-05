@@ -22,6 +22,7 @@
       "breakfast"
     ],
     "category": "breakfast",
+    "subCategory": "Chilla",
     "tags": [
       "chilla",
       "soyabean",
@@ -30,7 +31,7 @@
     "favourite": false,
     "addedBy": "family",
     "createdAt": "2026-10-05T12:45:02.213Z",
-    "updatedAt": "2026-10-05T12:45:02.213Z"
+    "updatedAt": "2026-10-05T14:06:15.901Z"
   },
   {
     "id": "R33459",
