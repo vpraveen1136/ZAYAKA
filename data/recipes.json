@@ -1,25 +1,5 @@
 [
   {
-    "id": "R0003",
-    "name": "Dal Tadka (Dhaba Style)",
-    "url": "https://www.youtube.com/watch?v=VpY9gK6zH4o",
-    "source": "youtube",
-    "meal": [
-      "lunch",
-      "dinner"
-    ],
-    "category": "lunch-dinner",
-    "subCategory": "Dal",
-    "tags": [
-      "yellow-dal",
-      "comfort-food"
-    ],
-    "favourite": false,
-    "addedBy": "family",
-    "createdAt": "2026-10-02T12:00:00Z",
-    "updatedAt": "2026-10-02T12:00:00Z"
-  },
-  {
     "id": "R0004",
     "name": "Crispy Aloo Paratha",
     "url": "https://www.youtube.com/watch?v=wX5yL8qE1nA",
