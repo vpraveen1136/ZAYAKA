@@ -1,25 +1,5 @@
 [
   {
-    "id": "R0005",
-    "name": "Crispy Onion Pakoda",
-    "url": "https://www.youtube.com/watch?v=q1o9X_8E9iQ",
-    "source": "youtube",
-    "meal": [
-      "tea"
-    ],
-    "category": "tea-snacks",
-    "subCategory": "Pakoda",
-    "tags": [
-      "monsoon",
-      "crunchy",
-      "chai-time"
-    ],
-    "favourite": false,
-    "addedBy": "family",
-    "createdAt": "2026-10-03T16:30:00Z",
-    "updatedAt": "2026-10-03T16:30:00Z"
-  },
-  {
     "id": "R0006",
     "name": "Gulab Jamun",
     "url": "https://www.youtube.com/watch?v=jK7P9eL2r0s",
