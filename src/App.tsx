@@ -18,7 +18,7 @@ import {
 import { Header } from './components/Header';
 import { WelcomeModal } from './components/WelcomeModal';
 import { SearchBar } from './components/SearchBar';
-import { CategoryPills } from './components/CategoryPills';
+import { CategoryPills, PrimaryFilterType, MealFilterType } from './components/CategoryPills';
 import { RecipeCard } from './components/RecipeCard';
 import { RecipeDetailModal } from './components/RecipeDetailModal';
 import { RecipeFormModal } from './components/RecipeFormModal';
@@ -46,10 +46,9 @@ export const App: React.FC = () => {
 
   // Search & Filter State
   const [searchQuery, setSearchQuery] = useState('');
-  const [activeFilter, setActiveFilter] = useState<{
-    type: 'all' | 'category' | 'subcategory' | 'favourite' | 'recent';
-    value: string;
-  }>({ type: 'all', value: '' });
+  const [primaryFilter, setPrimaryFilter] = useState<PrimaryFilterType>('all');
+  const [mealFilter, setMealFilter] = useState<MealFilterType>('all');
+  const [subCategoryFilter, setSubCategoryFilter] = useState<string>('all');
 
   // Modal states
   const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(null);
@@ -355,22 +354,43 @@ export const App: React.FC = () => {
   const filteredRecipes = useMemo(() => {
     let result = [...recipes];
 
-    // Filter by type
-    if (activeFilter.type === 'favourite') {
+    // 1. Primary Filter: Favourites
+    if (primaryFilter === 'favourites') {
       result = result.filter((r) => r.favourite);
-    } else if (activeFilter.type === 'recent') {
+    }
+
+    // 2. Meal Filter
+    if (mealFilter !== 'all') {
+      if (mealFilter === 'breakfast') {
+        result = result.filter((r) => r.meal?.includes('breakfast') || r.category === 'breakfast');
+      } else if (mealFilter === 'lunch') {
+        result = result.filter((r) => r.meal?.includes('lunch') || r.category === 'lunch-dinner');
+      } else if (mealFilter === 'dinner') {
+        result = result.filter((r) => r.meal?.includes('dinner') || r.category === 'lunch-dinner');
+      } else if (mealFilter === 'tea-snacks') {
+        result = result.filter((r) => r.meal?.includes('tea') || r.category === 'tea-snacks');
+      } else if (mealFilter === 'sweets') {
+        result = result.filter((r) => r.category === 'sweets' || (r.meal as string[])?.includes('sweets'));
+      } else {
+        result = result.filter((r) => r.category === mealFilter);
+      }
+    }
+
+    // 3. Subcategory (Contextual Category) Filter
+    if (subCategoryFilter && subCategoryFilter !== 'all') {
+      result = result.filter((r) => r.subCategory === subCategoryFilter);
+    }
+
+    // 4. Primary Filter: Recently Added (Sort newest first)
+    if (primaryFilter === 'recent') {
       result.sort((a, b) => {
         const timeA = new Date(a.createdAt || a.updatedAt || 0).getTime();
         const timeB = new Date(b.createdAt || b.updatedAt || 0).getTime();
         return timeB - timeA;
       });
-    } else if (activeFilter.type === 'category') {
-      result = result.filter((r) => r.category === activeFilter.value);
-    } else if (activeFilter.type === 'subcategory') {
-      result = result.filter((r) => r.subCategory === activeFilter.value);
     }
 
-    // Instant local search across: dish name, category, subcategory, tags
+    // 5. Instant local search across: dish name, category, subcategory, tags
     if (searchQuery.trim()) {
       const q = searchQuery.toLowerCase().trim();
       result = result.filter((r) => {
@@ -384,7 +404,7 @@ export const App: React.FC = () => {
     }
 
     return result;
-  }, [recipes, categories, activeFilter, searchQuery]);
+  }, [recipes, categories, primaryFilter, mealFilter, subCategoryFilter, searchQuery]);
 
   // If first launch and not authenticated, render WelcomeModal
   if (!access.isLoggedIn) {
@@ -408,11 +428,15 @@ export const App: React.FC = () => {
           onClear={() => setSearchQuery('')}
         />
 
-        {/* Dynamic Category & Quick Filter Pills */}
+        {/* Compact Tiered Filter Navigation */}
         <CategoryPills
           categories={categories}
-          activeFilter={activeFilter}
-          onSelectFilter={setActiveFilter}
+          primaryFilter={primaryFilter}
+          onSelectPrimaryFilter={setPrimaryFilter}
+          mealFilter={mealFilter}
+          onSelectMealFilter={setMealFilter}
+          subCategoryFilter={subCategoryFilter}
+          onSelectSubCategoryFilter={setSubCategoryFilter}
         />
 
         {/* Transient feedback toast */}

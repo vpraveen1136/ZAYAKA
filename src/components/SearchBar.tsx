@@ -14,7 +14,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({ value, onChange, onClear }
       <input
         type="search"
         className="search-input"
-        placeholder="🔍 Search dishes, ingredients, tags..."
+        placeholder="🔍 Search dishes, tags..."
         value={value}
         onChange={(e) => onChange(e.target.value)}
         autoComplete="off"

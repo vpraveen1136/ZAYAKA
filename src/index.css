@@ -161,50 +161,57 @@ button:active {
   color: var(--text-muted);
 }
 
-/* Quick Filter Pills */
-.filter-section {
+/* Compact Tiered Filter Navigation (Phase 1) */
+.home-filters-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
   margin-bottom: 14px;
 }
 
-.filter-section-title {
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  margin-bottom: 8px;
-}
-
-.pills-scroll {
+.filter-row {
   display: flex;
+  align-items: center;
   gap: 8px;
   overflow-x: auto;
-  padding-bottom: 4px;
+  white-space: nowrap;
   scrollbar-width: none;
   -webkit-overflow-scrolling: touch;
+  padding: 1px 0;
 }
 
-.pills-scroll::-webkit-scrollbar {
+.filter-row::-webkit-scrollbar {
   display: none;
 }
 
 .pill-btn {
   white-space: nowrap;
-  padding: 8px 16px;
-  height: 38px;
-  min-height: 38px;
-  border-radius: 20px;
+  padding: 5px 13px;
+  height: 32px;
+  min-height: 32px;
+  border-radius: 16px;
   background: var(--chip-bg);
   color: var(--text-main);
-  font-size: 0.9rem;
+  font-size: 0.84rem;
   font-weight: 500;
-  border: 1px solid transparent;
+  border: 1px solid var(--border-subtle);
   transition: all 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  cursor: pointer;
+  user-select: none;
+}
+
+.pill-btn:hover {
+  background: #EAE3D9;
 }
 
 .pill-btn.active {
   background: var(--accent-terracotta);
   color: #FFFFFF;
+  border-color: var(--accent-terracotta);
   font-weight: 600;
 }
 
@@ -217,6 +224,34 @@ button:active {
 .pill-btn.fav-pill.active {
   background: #D97706;
   color: #FFFFFF;
+  border-color: #D97706;
+}
+
+/* Contextual Subcategory Filter Row */
+.subcategory-row {
+  padding-top: 2px;
+}
+
+.pill-sub {
+  font-size: 0.8rem;
+  height: 28px;
+  min-height: 28px;
+  padding: 3px 11px;
+  border-radius: 14px;
+  background: #F4EFEB;
+  border: 1px solid #DFD7CC;
+  color: var(--text-main);
+}
+
+.pill-sub:hover {
+  background: #E8E0D5;
+}
+
+.pill-sub.active {
+  background: #8C391D;
+  color: #FFFFFF;
+  border-color: #8C391D;
+  font-weight: 600;
 }
 
 /* Recipe Cards */
