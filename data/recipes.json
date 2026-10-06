@@ -162,5 +162,21 @@
     "addedBy": "family",
     "createdAt": "2026-10-05T17:38:02.870Z",
     "updatedAt": "2026-10-05T17:38:02.870Z"
+  },
+  {
+    "id": "R84907",
+    "name": "Paneer Butter Masala",
+    "url": "https://youtu.be/a30BLUQiFoc?si=UbyFmOTHaOPEaITH",
+    "source": "youtube",
+    "meal": [
+      "lunch",
+      "dinner"
+    ],
+    "category": "lunch-dinner",
+    "subCategory": "Sabzi (Paneer)",
+    "favourite": false,
+    "addedBy": "family",
+    "createdAt": "2026-10-06T08:48:04.907Z",
+    "updatedAt": "2026-10-06T08:48:04.907Z"
   }
 ]
