@@ -121,6 +121,22 @@
     "updatedAt": "2026-10-06T08:43:59.362Z"
   },
   {
+    "id": "R19408",
+    "name": "Lucknowi Dal Falaknuma",
+    "url": "https://youtu.be/V5wMFB9Krb8?si=H-4C2C51hECfisBi",
+    "source": "youtube",
+    "meal": [
+      "lunch",
+      "dinner"
+    ],
+    "category": "lunch-dinner",
+    "subCategory": "Dal",
+    "favourite": false,
+    "addedBy": "family",
+    "createdAt": "2026-10-06T09:26:59.408Z",
+    "updatedAt": "2026-10-06T09:26:59.408Z"
+  },
+  {
     "id": "R22525",
     "name": "Methi Chhole Masala",
     "url": "https://youtu.be/jxTrI9zWaHQ?si=7lVxo98Z0Hwpm1VS",
