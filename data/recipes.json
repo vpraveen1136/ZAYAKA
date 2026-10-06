@@ -71,6 +71,24 @@
     "updatedAt": "2026-10-06T08:43:59.362Z"
   },
   {
+    "id": "R33165",
+    "name": "Chhole Bhature",
+    "url": "https://youtu.be/aFzBnNWEu5Y?si=SLpn9Ptk47LB7Vla",
+    "source": "youtube",
+    "meal": [
+      "lunch",
+      "dinner"
+    ],
+    "category": "breakfast",
+    "tags": [
+      "chhole"
+    ],
+    "favourite": false,
+    "addedBy": "family",
+    "createdAt": "2026-10-06T09:08:53.165Z",
+    "updatedAt": "2026-10-06T09:08:53.165Z"
+  },
+  {
     "id": "R33459",
     "name": "chana soyabean cutlet",
     "url": "https://youtube.com/shorts/qC-9YN6jivM?si=Exi34c3OCes8428C",
