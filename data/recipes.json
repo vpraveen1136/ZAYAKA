@@ -297,6 +297,26 @@
     "updatedAt": "2026-10-05T17:36:13.291Z"
   },
   {
+    "id": "R75453",
+    "name": "Egg Confit & Avocado Toast",
+    "url": "https://youtube.com/shorts/e6vqbsRyKIU?si=IGgNRqU284NL-0yf",
+    "source": "youtube",
+    "meal": [
+      "breakfast",
+      "tea"
+    ],
+    "category": "tea-snacks",
+    "subCategory": "Toast",
+    "tags": [
+      "avacado",
+      "egg"
+    ],
+    "favourite": false,
+    "addedBy": "family",
+    "createdAt": "2026-10-06T11:01:15.453Z",
+    "updatedAt": "2026-10-06T11:01:15.453Z"
+  },
+  {
     "id": "R80690",
     "name": "Khameeri Roti",
     "url": "https://youtube.com/shorts/kFpjETfnqqQ?si=FoZTuA2xNLLDKIrf",
