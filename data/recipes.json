@@ -263,7 +263,7 @@
   },
   {
     "id": "R69045",
-    "name": "Banana Omlette",
+    "name": "Banana Omlette/Pancake",
     "url": "https://youtube.com/shorts/gAyX-DCnlwI?si=cODiLQSwTOE_EXsc",
     "source": "youtube",
     "meal": [
@@ -271,10 +271,14 @@
     ],
     "category": "breakfast",
     "subCategory": "Eggs",
+    "tags": [
+      "omlette",
+      "pancake"
+    ],
     "favourite": false,
     "addedBy": "family",
     "createdAt": "2026-10-06T09:24:29.044Z",
-    "updatedAt": "2026-10-06T09:24:29.044Z"
+    "updatedAt": "2026-10-06T09:38:29.375Z"
   },
   {
     "id": "R70961",
