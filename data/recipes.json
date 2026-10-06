@@ -35,6 +35,22 @@
     "updatedAt": "2026-10-05T14:06:15.901Z"
   },
   {
+    "id": "R07667",
+    "name": "Langar Wali Dal",
+    "url": "https://youtu.be/4ElMy_9jaEY?si=rj1xM52XDvVjs7bc",
+    "source": "youtube",
+    "meal": [
+      "lunch",
+      "dinner"
+    ],
+    "category": "lunch-dinner",
+    "subCategory": "Dal",
+    "favourite": false,
+    "addedBy": "family",
+    "createdAt": "2026-10-06T09:11:47.667Z",
+    "updatedAt": "2026-10-06T09:11:47.667Z"
+  },
+  {
     "id": "R13611",
     "name": "Shakshuka",
     "url": "https://youtu.be/VNW2_ndBWYg?si=_uDEhODwh1Eh1WKT",
