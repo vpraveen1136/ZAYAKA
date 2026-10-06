@@ -316,6 +316,25 @@
     "updatedAt": "2026-10-05T17:36:13.291Z"
   },
   {
+    "id": "R80690",
+    "name": "Khameeri Roti",
+    "url": "https://youtube.com/shorts/kFpjETfnqqQ?si=FoZTuA2xNLLDKIrf",
+    "source": "youtube",
+    "meal": [
+      "lunch",
+      "dinner"
+    ],
+    "category": "lunch-dinner",
+    "subCategory": "Roti / Paratha",
+    "tags": [
+      "khameeri"
+    ],
+    "favourite": false,
+    "addedBy": "family",
+    "createdAt": "2026-10-06T10:08:00.690Z",
+    "updatedAt": "2026-10-06T10:08:00.690Z"
+  },
+  {
     "id": "R82870",
     "name": "High Protein Sprouted Chilla",
     "url": "https://youtube.com/shorts/uhJudEYLAzQ?si=kA6IWL-JcIa8_zbR",
