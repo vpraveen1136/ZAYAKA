@@ -159,6 +159,22 @@
     "updatedAt": "2026-10-06T03:06:12.872Z"
   },
   {
+    "id": "R47423",
+    "name": "Dal Dhokli",
+    "url": "https://youtu.be/LnMlRoHCDoA?si=3v-QtlUVKpnxQicI",
+    "source": "youtube",
+    "meal": [
+      "lunch",
+      "dinner"
+    ],
+    "category": "lunch-dinner",
+    "subCategory": "Dal",
+    "favourite": false,
+    "addedBy": "family",
+    "createdAt": "2026-10-06T09:14:07.423Z",
+    "updatedAt": "2026-10-06T09:14:07.423Z"
+  },
+  {
     "id": "R47650",
     "name": "Chana mixture",
     "url": "https://www.youtube.com/shorts/-QS-Ibv14T8",
