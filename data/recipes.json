@@ -67,6 +67,24 @@
     "updatedAt": "2026-10-06T09:11:47.667Z"
   },
   {
+    "id": "R08944",
+    "name": "Moradabadi Dal Chaat",
+    "url": "https://youtu.be/lzb7zT3EbUA?si=oLzHmqzPDg5as1UZ",
+    "source": "youtube",
+    "meal": [
+      "tea"
+    ],
+    "category": "tea-snacks",
+    "subCategory": "Chaat",
+    "tags": [
+      "dal"
+    ],
+    "favourite": false,
+    "addedBy": "family",
+    "createdAt": "2026-10-06T09:16:48.944Z",
+    "updatedAt": "2026-10-06T09:16:48.944Z"
+  },
+  {
     "id": "R13611",
     "name": "Shakshuka",
     "url": "https://youtu.be/VNW2_ndBWYg?si=_uDEhODwh1Eh1WKT",
