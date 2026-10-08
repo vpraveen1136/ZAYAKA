@@ -226,6 +226,26 @@
     "updatedAt": "2026-10-05T14:50:47.650Z"
   },
   {
+    "id": "R50649",
+    "name": "Capsicum Omelette #shorts",
+    "url": "https://youtube.com/shorts/kKtGytr5DKA?si=5Ua_dp7b4saQc_4z",
+    "source": "youtube",
+    "meal": [
+      "dinner",
+      "breakfast",
+      "tea"
+    ],
+    "category": "breakfast",
+    "subCategory": "Eggs",
+    "tags": [
+      "omelettes"
+    ],
+    "favourite": false,
+    "addedBy": "family",
+    "createdAt": "2026-10-08T03:25:50.649Z",
+    "updatedAt": "2026-10-08T03:25:50.649Z"
+  },
+  {
     "id": "R54636",
     "name": "Chilli Oil Egg Avocado Toast",
     "url": "https://youtube.com/shorts/ymg3Y2d5C-4?si=p-ABFzZVejQKKaoo",
