@@ -152,6 +152,23 @@
     "updatedAt": "2026-10-06T09:26:59.408Z"
   },
   {
+    "id": "R20415",
+    "name": "Crispy Flaky Kanda Besan Paratha",
+    "url": "https://youtu.be/xgYaJJZTqSk?si=2jM-S-9_gU0vu__1",
+    "source": "youtube",
+    "meal": [
+      "breakfast",
+      "lunch",
+      "dinner"
+    ],
+    "category": "breakfast",
+    "subCategory": "Paratha",
+    "favourite": false,
+    "addedBy": "family",
+    "createdAt": "2026-10-12T08:28:40.415Z",
+    "updatedAt": "2026-10-12T08:28:40.415Z"
+  },
+  {
     "id": "R22525",
     "name": "Methi Chhole Masala",
     "url": "https://youtu.be/jxTrI9zWaHQ?si=7lVxo98Z0Hwpm1VS",
