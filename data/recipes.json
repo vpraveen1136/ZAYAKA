@@ -437,6 +437,24 @@
     "updatedAt": "2026-10-06T10:08:00.690Z"
   },
   {
+    "id": "R81494",
+    "name": "Breakfast With Eggs And Potato",
+    "url": "https://youtube.com/shorts/HeoePRfDl6M?si=_jR1ywmZgzd2kGBA",
+    "source": "youtube",
+    "meal": [
+      "breakfast"
+    ],
+    "category": "breakfast",
+    "tags": [
+      "eggs",
+      "potato"
+    ],
+    "favourite": false,
+    "addedBy": "family",
+    "createdAt": "2026-10-14T15:54:41.494Z",
+    "updatedAt": "2026-10-14T15:54:41.494Z"
+  },
+  {
     "id": "R82870",
     "name": "High Protein Sprouted Chilla",
     "url": "https://youtube.com/shorts/uhJudEYLAzQ?si=kA6IWL-JcIa8_zbR",
