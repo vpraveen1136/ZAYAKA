@@ -258,6 +258,24 @@
     "updatedAt": "2026-10-05T14:50:47.650Z"
   },
   {
+    "id": "R48504",
+    "name": "Rava Uttapam",
+    "url": "https://youtu.be/BiO1SXyRAs4?si=BOxZ0gRLFRk1I1Rj",
+    "source": "youtube",
+    "meal": [
+      "breakfast"
+    ],
+    "category": "breakfast",
+    "subCategory": "South Indian",
+    "tags": [
+      "uttapam"
+    ],
+    "favourite": false,
+    "addedBy": "family",
+    "createdAt": "2026-10-21T05:47:28.504Z",
+    "updatedAt": "2026-10-21T05:47:28.504Z"
+  },
+  {
     "id": "R50649",
     "name": "Capsicum Omelette #shorts",
     "url": "https://youtube.com/shorts/kKtGytr5DKA?si=5Ua_dp7b4saQc_4z",
