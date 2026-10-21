@@ -51,6 +51,22 @@
     "updatedAt": "2026-10-05T14:06:15.901Z"
   },
   {
+    "id": "R03893",
+    "name": "Veg Shami Kebab",
+    "url": "https://youtu.be/sh1zIFkZ5xo?si=RZgtfEH_5Oo42hfv",
+    "source": "youtube",
+    "meal": [
+      "breakfast",
+      "tea"
+    ],
+    "category": "breakfast",
+    "subCategory": "Cutlet/Kebab",
+    "favourite": false,
+    "addedBy": "family",
+    "createdAt": "2026-10-21T05:51:43.893Z",
+    "updatedAt": "2026-10-21T05:51:43.893Z"
+  },
+  {
     "id": "R07667",
     "name": "Langar Wali Dal",
     "url": "https://youtu.be/4ElMy_9jaEY?si=rj1xM52XDvVjs7bc",
